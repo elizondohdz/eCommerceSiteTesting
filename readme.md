@@ -2,6 +2,37 @@
 
 ## Overview
 
+---
+Note: before going further please note that this repository is still in progress, and this project is meant to serve as an integration of multiple technologies and tools, rather than a ready to use site.
+
+If you want to see testing related documentation, please go to docs/ there I will have
+
+- User Stories (requirements.md)
+- Site's architecture (architecture.md)
+- Testing Strategy (test-strategy.md)
+
+What you will find here:
+
+- Unit Tests in Laravel
+- Integration Tests in Laravel
+- Laravel API (Including models, migrations, custom requests, validations)
+
+- Vue frontend
+
+- e2e testing with Cypress
+
+What components are still on development
+
+- CD/CI integration with Github Actions
+- Performance Testing
+- Component Testing with Cypress
+- Another form of integration testing (Api testing with Axios)
+- A better frontend (Using Tailwind CSS)
+
+
+
+---
+
 This project is a simplified eCommerce application designed to integrate Laravel Backend, Vue.js frontend, Cypress testing Suite, Github Actions and Docker
 
 The focus is not only on building features, but implementing a robust systems that integrate a testing strategy across multiple layers following the testing pyramid:
@@ -57,8 +88,8 @@ This project follows a testing pyramid approach:
 
 ### Integration / API Tests
 - Scope: API endpoints and contracts
-- Tool: Postman (Newman)
-- Location: /tests/integration
+- Tool: Laravel
+- Location: backend/tests/feature
 
 ### End-to-End Tests
 - Scope: Critical user flows
