@@ -18,11 +18,11 @@ class AuthTest extends TestCase
     public function test_hashing_is_working_correctly(): void
     {
         // Arrange
-        $password = 'password123';
+        $password = '12345';
 
         $user = User::factory()->create([
+            'name' => 'Test User',
             'email' => 'test@example.com',
-            'name' => 'testuser',
             'password' => Hash::make($password),
         ]);
 

@@ -7,6 +7,7 @@
         v-model="email"
         type="email"
         name="email"
+        data-cy="email-input"
         placeholder="Email"
       />
 
@@ -14,13 +15,14 @@
         v-model="password"
         type="password"
         name="password"
+        data-cy="password-input"
         placeholder="Password"
       />
 
-      <button type="submit">Login</button>
+      <button type="submit" data-cy="login-button">Login</button>
     </form>
 
-    <p v-if="error">{{ error }}</p>
+    <p v-if="error" data-cy="error-message">{{ error }}</p>
   </div>
 </template>
 

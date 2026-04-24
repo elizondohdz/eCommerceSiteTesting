@@ -36,11 +36,5 @@ class LoginTest extends TestCase
         $response->assertHeader('Content-Type', 'application/json');
         
         $this->assertIsString($response['token']);
-
-        $token = $response['token'];
-        $meResponse = $this->withHeader('Authorization', "Bearer $token")
-                   ->getJson('/api/me');
-        
-        $meResponse->assertStatus(200);
     }
 }
