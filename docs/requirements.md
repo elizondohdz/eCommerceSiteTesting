@@ -1,4 +1,4 @@
-# 📋 Requirements — eCommerce SDET Project
+# Requirements — eCommerce SDET Project
 
 ## Overview
 
