@@ -13,6 +13,10 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
+        // Important: This seeder is for UI Testing 
+        // purposes, so we a re creating a fixed set of 
+        // data, for dynamic data we are going o use 
+        // factories and seeders on the Unit and Feature tests sections
          $products = [
             [
                 'name' => 'Gaming Mouse',

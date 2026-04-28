@@ -9,8 +9,9 @@ use Tests\TestCase;
 
 class ProductListTest extends TestCase
 {
+    use RefreshDatabase;
     public function test_it_returns_product_list()
-    {
+    {        
         // Arrange
         Product::factory()->count(3)->create([
             'is_active' => true,
