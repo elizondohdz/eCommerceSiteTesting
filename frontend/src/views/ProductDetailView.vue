@@ -11,6 +11,12 @@
     <span data-cy="product-price">
       ${{ product.price }}
     </span>
+    <button
+      data-cy="add-to-cart-button"
+      @click="handleAddToCart"
+    >
+      Add to Cart
+    </button>
   </div>
 
   <div v-else>
@@ -22,6 +28,7 @@
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { getProductById } from '../services/productService';
+import { addToCart} from '../services/cartService';
 
 const route = useRoute();
 
@@ -37,6 +44,10 @@ const fetchProduct = async () => {
     loading.value = false;
   }
 };
+
+const handleAddToCart = async () => {
+  await addToCart(product.value.id);
+}
 
 onMounted(fetchProduct);
 </script>
