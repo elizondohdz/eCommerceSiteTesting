@@ -11,35 +11,34 @@ class CheckoutController extends Controller
 {
     public function store(Request $request)
     {
-        $cart = Cart::with('items.products')
-            ->where('user_id', $request->user()->id)
-            ->firstOrFail();
-
-        if($cart->items->isEmpty()) {
-            return response()->json([
-                'message' => 'Cart is empty'
-            ], 400);
-        }
-
-            $total = collect($cart->items->price)->sum();
+        $user = $request->user();
+        
+        return DB::transaction(function () use ($user) {
+            $cart = Cart::with('items.product')
+                ->where('user_id', $user->id)
+                ->firstOrFail();
+            
+            if ($cart->items->isEmpty()) {
+                abort(400, 'Cart is empty');
+            }
 
             $order = Order::create([
-                'user_id' => $request->user()->id,
-                'total_amount' => $total
+                'user_id' => $user->id,
             ]);
-
+            
             foreach ($cart->items as $item) {
                 $order->items()->create([
                     'product_id' => $item->product_id,
                     'quantity' => $item->quantity,
-                    'price' => $item->product->price
+                    'price' => $item->product->price,
                 ]);
             }
 
             $cart->items()->delete();
-            return $order->load('items.product');
-        });
 
-        return response()->json($order, 201);
+            return response()->json([
+                'message' => 'Order created successfully'
+                ], 201);
+            });
     }
 }

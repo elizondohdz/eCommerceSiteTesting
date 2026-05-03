@@ -1,52 +1,85 @@
 <template>
   <div>
-    <h1>Your Cart</h1>
+    <h1>Checkout</h1>
 
     <div v-if="loading">
-      Loading cart...
+      Processing order...
+    </div>
+
+    <div v-else-if="success">
+      <h2 data-cy="checkout-success">
+        Order placed successfully
+      </h2>
     </div>
 
     <div v-else>
       <div
         v-for="item in cart.items"
         :key="item.id"
-        data-cy="cart-item"
+        data-cy="checkout-item"
       >
         <h3>{{ item.product.name }}</h3>
         <p>Quantity: {{ item.quantity }}</p>
-
-        <button
-          data-cy="remove-item-button"
-          @click="handleRemove(item.id)"
-        >
-          Remove
-        </button>
       </div>
+
+      <p data-cy="checkout-total">
+        Total: ${{ total }}
+      </p>
+
+      <button
+        data-cy="place-order-button"
+        @click="placeOrder"
+      >
+        Place Order
+      </button>
+    </div>
+
+    <div
+      v-if="error"
+      data-cy="checkout-error"
+    >
+      {{ error }}
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { getCart, removeFromCart } from '../services/cartService';
+import { getCart } from '../services/cartService';
+import { checkout } from '../services/checkoutService';
 
 const cart = ref({
   items: []
 });
 
-const loading = ref(true);
+const total = ref(0);
+const loading = ref(false);
+const success = ref(false);
+const error = ref('');
 
 const fetchCart = async () => {
+  const data = await getCart();
+
+  cart.value = data;
+
+  total.value = cart.value.items.reduce((sum, item) => {
+    return sum + (item.quantity * item.product.price);
+  }, 0);
+};
+
+const placeOrder = async () => {
   try {
-    cart.value = await getCart();
+    loading.value = true;
+
+    await checkout();
+
+    success.value = true;
+    cart.value.items = [];
+  } catch (err) {
+    error.value = err.response?.data?.message || 'Checkout failed';
   } finally {
     loading.value = false;
   }
-};
-
-const handleRemove = async (itemId) => {
-  await removeFromCart(itemId);
-  await fetchCart();
 };
 
 onMounted(fetchCart);
