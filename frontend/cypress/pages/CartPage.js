@@ -1,6 +1,6 @@
 class CartPage {
     visit() {
-        cy.visit('cart');
+        cy.visit('/cart');
     }
 
     validateCartItemExists() {
@@ -15,7 +15,7 @@ class CartPage {
     }
 
     validateCartIsEmpty() {
-        cy.get('[data-cy="cart-item"')
+        cy.get('[data-cy="cart-item"]')
             .should('have.length', 0)
     }
 }
