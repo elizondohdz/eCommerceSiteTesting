@@ -1,0 +1,94 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  
+jobs:
+
+  backend-tests:
+    runs-on: ubuntu-latest
+
+  defaults:
+    run:
+      working-directory: backend
+
+  steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: 8.3
+        extensions: mbstring, sqlite, pdo_sqlite
+
+    - name: Install Composer dependencies
+      run: composer install --no-interaction --prefer-dist
+
+    - name: Prepare Laravel environment
+      run: |
+        cp .env.example .env
+        php artisan key:generate
+
+    - name: Run migrations and run seeders
+      run: php artisan migrate --seed --env=testing
+
+    - name: Run Unit and Feature tests
+      run: php artisan test
+
+  frontend-e2e:
+    runs-on: ubuntu-latest
+    needs: backend-tests
+
+    steps:
+      - name: Checkout repository
+      - uses: actions/checkout@v4 
+
+      #Backend setup
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+          extensions: mbstring, sqlite, pdo_sqlite
+        
+      - name: Install backend dependencies
+        working-directory: Backend
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Prepare backend env 
+        working-directory: Backend 
+        run: |
+          cp .env.example .env 
+          php artisan key:generate 
+
+      - name: Run migrations and run seeders
+        run: php artisan migrate --seed --env=testing
+
+      - name: Start Laravel Server
+        working-directory: Backend 
+        run: php artisan serve --host:127.0.0.1 --port 8000 &
+
+      # Frontend and Cypress
+      - name: Cypress run
+        uses: cypress-io/github-action@v7
+        with:
+          working-directory: frontend
+          start: npm run dev
+          wait-on: http://localhost:5137
+
+      - name: Upload Cypress screenshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-screenshots
+          path: Frontend/cypress/screenshots
+
+      - name: Upload Mochawesome reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mochawesome-report
+          path: Frontend/cypress/reports
