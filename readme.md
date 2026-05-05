@@ -151,7 +151,7 @@ npm run test:all
 
 ## Test Reporting
 
-- HTML reports with Mochawesome
+- HTML reports with Mochawesome (More info on docs/reporting.md)
 - Includes screenshots on failure and logs
 
 ---
