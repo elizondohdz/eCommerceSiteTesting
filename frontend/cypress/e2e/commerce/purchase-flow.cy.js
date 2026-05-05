@@ -2,6 +2,7 @@ import LoginPage from '../../pages/LoginPage';
 import ProductListPage from '../../pages/ProductListPage';
 import ProductDetailPage from '../../pages/ProductDetailPage';
 import CartPage from '../../pages/CartPage';
+import CheckoutPage from '../../pages/CheckoutPage';
 
 
 describe ('Ecommerce Purchase flow', () => {
@@ -60,7 +61,62 @@ describe ('Ecommerce Purchase flow', () => {
         CartPage.removeFirstItem();
 
         cy.wait('@removeItemRequest');
+    });
 
-    }) ;
+    it('should complete full checkout flow', () => {
+
+    // Login
+    LoginPage.visit();
+
+    cy.intercept('POST', '**/api/login').as('loginRequest');
+
+    LoginPage.login(user.email, user.password);
+
+    cy.wait('@loginRequest');
+
+    // Products
+    cy.intercept('GET', '**/api/products').as('productsRequest');
+
+    ProductListPage.visit();
+
+    cy.wait('@productsRequest');
+
+    // Product detail
+    cy.intercept('GET', '**/api/products/*').as('productDetailRequest');
+
+    ProductListPage.clickFirstProduct();
+
+    cy.wait('@productDetailRequest');
+
+    // Add to cart
+    cy.intercept('POST', '**/api/cart/items').as('addToCartRequest');
+
+    ProductDetailPage.addToCart();
+
+    cy.wait('@addToCartRequest');
+
+    // Cart
+    cy.intercept('GET', '**/api/cart').as('cartRequest');
+
+    CartPage.visit();
+
+    cy.wait('@cartRequest');
+
+    CartPage.validateCartItemExists();
+
+    // Checkout
+    cy.intercept('POST', '**/api/checkout').as('checkoutRequest');
+
+    cy.get('[data-cy="checkout-button"]').click();
+
+    CheckoutPage.placeOrder();
+
+    cy.wait('@checkoutRequest').then((interception) => {
+        expect(interception.response.statusCode).to.eq(201);
+    });
+
+    CheckoutPage.validateSuccess();
+    });
 
 })
+
