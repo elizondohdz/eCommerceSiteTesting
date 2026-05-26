@@ -33,6 +33,12 @@ jobs:
           cp .env.example .env
           php artisan key:generate
 
+      - name: Create SQLite database
+        working-directory: backend
+        run: |
+          mkdir -p database
+          touch database/database.sqlite
+
       - name: Run migrations and seeders
         run: php artisan migrate --seed --env=testing
 
