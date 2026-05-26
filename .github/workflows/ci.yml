@@ -61,7 +61,7 @@ jobs:
       - name: Prepare backend environment
         working-directory: backend
         run: |
-          cp .env.example .env
+          cp .env.testing .env
           php artisan key:generate
 
       - name: Run migrations and seeders
