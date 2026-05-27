@@ -1,0 +1,92 @@
+{
+  "info": {
+    "_postman_id": "9f458939-ed74-4c49-8f83-6baf6f416615",
+    "name": "Ecommerce API Contracts",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "29001386"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "POST Login sucess tests",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statuts code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response contains token\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "",
+                  "    pm.expect(jsonData).to.have.property(\"token\");",
+                  "});",
+                  "",
+                  "pm.test(\"Token is string\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "",
+                  "    pm.expect(jsonData.token).to.be.a(\"string\");",
+                  "});",
+                  "",
+                  "const schema = {",
+                  "  type: \"object\",",
+                  "  properties: {",
+                  "    token: { type: \"string\" }",
+                  "  },",
+                  "  required: [\"token\"]",
+                  "};",
+                  "",
+                  "pm.test(\"Schema is valid\", function () {",
+                  "  pm.response.to.have.jsonSchema(schema);",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"test@example.com\",\n    \"password\": \"12345\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": []
+    },
+    {
+      "name": "Cart",
+      "item": []
+    },
+    {
+      "name": "Checkout",
+      "item": []
+    }
+  ]
+}

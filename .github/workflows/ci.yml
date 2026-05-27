@@ -99,3 +99,7 @@ jobs:
         with:
           name: mochawesome-report
           path: frontend/cypress/reports
+
+      - name: Run API Contract Tests
+        run: |
+          newman run ...
