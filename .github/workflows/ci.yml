@@ -100,6 +100,13 @@ jobs:
           name: mochawesome-report
           path: frontend/cypress/reports
 
+      - name: Install Newman
+        run: npm install -g newman newman-reporter-htmlextra
+
       - name: Run API Contract Tests
+        working-directory: postman
         run: |
-          newman run ...
+          newman run collections/ecommerce-api.json \
+          -e environments/local.postman_environment.json \
+          -r cli,htmlextra \
+          --reporter-htmlextra-export reports/report.html
