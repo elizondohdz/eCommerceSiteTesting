@@ -24,6 +24,7 @@ jobs:
         with:
           php-version: 8.3
           extensions: mbstring, sqlite, pdo_sqlite
+          coverage: xdebug
 
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist
@@ -43,7 +44,13 @@ jobs:
         run: php artisan migrate --seed --env=testing
 
       - name: Run Unit and Feature tests
-        run: php artisan test
+        run: php artisan test --coverage-clover coverage.xml
+
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: laravel-coverage
+          path: backend/coverage.xml
 
   frontend-e2e:
     runs-on: ubuntu-latest
