@@ -13,32 +13,29 @@ class AuthController extends Controller
         // TODO : use a FormRequest for validation instead of inline validation
         $credentials = $request->validate([
             'email' => 'required|email',
-            'password' => 'required'
+            'password' => 'required',
         ]);
-
-        
 
         // Login attempt
         $token = JWTAuth::attempt([
             'email' => $credentials['email'],
-            'password' => $credentials['password']
+            'password' => $credentials['password'],
         ]);
 
-        
-        if (!$token) {
+        if (! $token) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-        
+
         // Login successful, return token
         // TODO: return a TokenResource instead of raw token
         return response()->json([
             'token' => $token,
-            'type' => 'bearer'
+            'type' => 'bearer',
         ], 200);
     }
 
-        // Get authenticated user
-        public function me()
+    // Get authenticated user
+    public function me()
     {
         return response()->json(Auth::user());
     }

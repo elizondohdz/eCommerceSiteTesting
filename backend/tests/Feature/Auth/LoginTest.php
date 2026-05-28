@@ -11,6 +11,7 @@ use Tests\TestCase;
 class LoginTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
+
     public function test_user_can_login_successfully_and_receive_token(): void
     {
         // Arrange
@@ -21,20 +22,20 @@ class LoginTest extends TestCase
             'password' => Hash::make($password),
         ]);
 
-       // Act
+        // Act
         $response = $this->postJson('/api/login', [
             'email' => $user->email,
             'password' => $password,
         ]);
 
-         // Assert
+        // Assert
         $response->assertStatus(200)
-                 ->assertJsonStructure([
-                     'token'
-                 ]);
+            ->assertJsonStructure([
+                'token',
+            ]);
 
         $response->assertHeader('Content-Type', 'application/json');
-        
+
         $this->assertIsString($response['token']);
     }
 }

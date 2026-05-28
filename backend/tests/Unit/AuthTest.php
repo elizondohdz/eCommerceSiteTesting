@@ -29,7 +29,7 @@ class AuthTest extends TestCase
         // Act
         $token = JWTAuth::attempt([
             'email' => $user->email,
-            'password' => $password
+            'password' => $password,
         ]);
 
         // Assert

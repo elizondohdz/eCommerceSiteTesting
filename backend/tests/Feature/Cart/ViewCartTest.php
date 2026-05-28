@@ -4,13 +4,13 @@ namespace Tests\Feature\Cart;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ViewCartTest extends TestCase
 {
     use RefreshDatabase;
+
     /**
      * A basic feature test example.
      */
@@ -21,7 +21,7 @@ class ViewCartTest extends TestCase
         $token = JWTAuth::fromUser($user);
 
         $response = $this->withHeaders([
-            'Authorization' => "Bearer {$token}"
+            'Authorization' => "Bearer {$token}",
         ])->getJson('/api/cart');
 
         $response->assertStatus(200);

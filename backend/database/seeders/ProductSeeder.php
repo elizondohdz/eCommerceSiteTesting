@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Product;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class ProductSeeder extends Seeder
@@ -13,45 +12,45 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
-        // Important: This seeder is for UI Testing 
-        // purposes, so we a re creating a fixed set of 
-        // data, for dynamic data we are going o use 
+        // Important: This seeder is for UI Testing
+        // purposes, so we a re creating a fixed set of
+        // data, for dynamic data we are going o use
         // factories and seeders on the Unit and Feature tests sections
-         $products = [
+        $products = [
             [
                 'name' => 'Gaming Mouse',
                 'description' => 'High precision gaming mouse',
                 'price' => 49.99,
                 'image_url' => null,
-                'is_active' => true
+                'is_active' => true,
             ],
             [
                 'name' => 'Mechanical Keyboard',
                 'description' => 'RGB mechanical keyboard',
                 'price' => 89.99,
                 'image_url' => null,
-                'is_active' => true
+                'is_active' => true,
             ],
             [
                 'name' => 'Gaming Headset',
                 'description' => 'Surround sound gaming headset',
                 'price' => 79.99,
                 'image_url' => null,
-                'is_active' => true
+                'is_active' => true,
             ],
             [
                 'name' => 'Monitor 27"',
                 'description' => '144Hz gaming monitor',
                 'price' => 249.99,
                 'image_url' => null,
-                'is_active' => true
+                'is_active' => true,
             ],
             [
                 'name' => 'Mouse Pad XL',
                 'description' => 'Large gaming mouse pad',
                 'price' => 19.99,
                 'image_url' => null,
-                'is_active' => true
+                'is_active' => true,
             ],
         ];
 

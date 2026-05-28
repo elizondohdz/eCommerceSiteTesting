@@ -14,38 +14,38 @@ class CartController extends Controller
     {
         $cart = Cart::with('items.product')
             ->firstOrCreate([
-                'user_id' => $request->user()->id
+                'user_id' => $request->user()->id,
             ]);
-        
+
         return response()->json($cart);
     }
 
     public function store(Request $request)
     {
-        
+
         $validated = $request->validate([
-            'product_id' => 'required|exists:products,id'
+            'product_id' => 'required|exists:products,id',
         ]);
-        
+
         $cart = Cart::firstOrCreate([
-            'user_id' => $request->user()->id
+            'user_id' => $request->user()->id,
         ]);
 
         $existingItem = $cart->items()
             ->where('product_id', $validated['product_id'])
             ->first();
-        
-        if($existingItem) {
+
+        if ($existingItem) {
             $existingItem->increment('quantity');
 
             return response()->json($existingItem);
         }
-        
+
         $item = $cart->items()->create([
             'product_id' => $validated['product_id'],
-            'quantity' => 1
+            'quantity' => 1,
         ]);
-    
+
         return response()->json($item, 201);
     }
 
@@ -60,9 +60,7 @@ class CartController extends Controller
         $item->delete();
 
         return response()->json([
-            'message' => 'Item removed successfully'
+            'message' => 'Item removed successfully',
         ]);
     }
-
-
 }

@@ -11,7 +11,7 @@ class Order extends Model
 
     protected $fillable = [
         'user_id',
-        'total_amount'
+        'total_amount',
     ];
 
     public function items()
@@ -23,5 +23,4 @@ class Order extends Model
     {
         return $this->belongsTo(User::class);
     }
-
 }
